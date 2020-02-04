@@ -38,10 +38,19 @@ class BrandViewController: UITableViewController {
     }
     
     func loadError() {
-        let alert = UIAlertController(title: "Loading Error",
-                                      message: "There was a problem loading the news feed",
-                                      preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the news feed", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil) }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return brands.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let brand = brands[indexPath.row]
+        cell.textLabel?.text = brand["name"]
+        return cell
+    }
 }
 
