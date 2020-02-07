@@ -16,14 +16,17 @@ class BrandsViewController: UITableViewController {
         super.viewDidLoad()
         self.title = "makeup brands"
         let query = "https://makeup-api.herokuapp.com/api/v1/products.json"
-        if let url = URL(string: query) {
-            if let data = try? Data(contentsOf: url) {
-                let json = try! JSON(data: data)
-                parse(json: json)
-                return
+        DispatchQueue.global(qos: .userInitiated).async {
+            [unowned self] in
+            if let url = URL(string: query) {
+                if let data = try? Data(contentsOf: url) {
+                    let json = try! JSON(data: data)
+                    self.parse(json: json)
+                    return
+                }
             }
+            self.loadError()
         }
-        loadError()
     }
     
     func parse(json: JSON) {
@@ -36,14 +39,19 @@ class BrandsViewController: UITableViewController {
                 brands.append(brand)
             }
         }
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            [unowned self] in
+            self.tableView.reloadData()
+        }
     }
     
     func loadError() {
+        DispatchQueue.main.async {
+        [unowned self] in
         let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the makeup brands", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-        
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
