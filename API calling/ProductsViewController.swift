@@ -1,21 +1,22 @@
 //
 //  ViewController.swift
 //  API calling
-//  
+//
 //  Created by Riley Bowling on 1/31/20.
 //  Copyright © 2020 Riley Bowling. All rights reserved.
 //
 
 import UIKit
 
-class BrandsViewController: UITableViewController {
+class ProductsViewController: UITableViewController {
     
-    var brands = [[String: String]]()
+    var brand = [String: String]()
+    var products = [[String: String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "makeup brands"
-        let query = "https://makeup-api.herokuapp.com/api/v1/products.json"
+        self.title = "brand products"
+        let query = "https://http://makeup-api.herokuapp.com/api/v1/products.json?brand=\(brand)"
         DispatchQueue.global(qos: .userInitiated).async {
             [unowned self] in
             if let url = URL(string: query) {
@@ -31,12 +32,14 @@ class BrandsViewController: UITableViewController {
     
     func parse(json: JSON) {
         for result in json.arrayValue {
-            let name = result["brand"].stringValue
-            let brand = ["brand": name]
-            if brands.contains(["brand" : name]) {
+            let productName = result["name"].stringValue
+            let productType = result["product_type"].stringValue
+            let price = result["price"].stringValue
+            let product = ["name": productName, "product_type": productType, "price": price]
+            if products.contains(["name": productName, "product_type": productType, "price": price]) {
                 continue
             } else {
-                brands.append(brand)
+                products.append(product)
             }
         }
         DispatchQueue.main.async {
@@ -55,13 +58,13 @@ class BrandsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return brands.count
+        return products.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let brand = brands[indexPath.row]
-        cell.textLabel?.text = brand["brand"]
+        let product = products[indexPath.row]
+        cell.textLabel?.text = product["product"]
         return cell
     }
 }
