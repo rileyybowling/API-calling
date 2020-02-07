@@ -8,39 +8,43 @@
 
 import UIKit
 
-class BrandViewController: UITableViewController {
+class BrandsViewController: UITableViewController {
     
     var brands = [[String: String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "brands"
-        let query = "http://makeup-api.herokuapp.com/api/v1/products.json?product_type=blush"
+        self.title = "makeup brands"
+        let query = "https://makeup-api.herokuapp.com/api/v1/products.json"
         if let url = URL(string: query) {
             if let data = try? Data(contentsOf: url) {
                 let json = try! JSON(data: data)
-                if json["status"] == "ok" {
-                    parse(json: json)
-                    return
-                }
+                parse(json: json)
+                return
             }
         }
         loadError()
     }
     
     func parse(json: JSON) {
-        for result in json["brands"].arrayValue {
+        for result in json.arrayValue {
             let name = result["brand"].stringValue
-            let brand = ["name": name]
-            brands.append(brand)
+            let brand = ["brand": name]
+            if brands.contains(["brand" : name]) {
+                continue
+            } else {
+                brands.append(brand)
+            }
         }
         tableView.reloadData()
     }
     
     func loadError() {
-        let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the news feed", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the makeup brands", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil) }
+        present(alert, animated: true, completion: nil)
+        
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return brands.count
@@ -49,8 +53,7 @@ class BrandViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let brand = brands[indexPath.row]
-        cell.textLabel?.text = brand["name"]
+        cell.textLabel?.text = brand["brand"]
         return cell
     }
 }
-
