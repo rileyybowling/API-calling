@@ -31,6 +31,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="vYu-2F-dfF" kind="show" id="DYa-tb-Tdi"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -38,7 +41,13 @@
                             <outlet property="delegate" destination="QPR-Gx-tak" id="bo1-Rs-0Fw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="PLB-JQ-jaI"/>
+                    <navigationItem key="navigationItem" id="PLB-JQ-jaI">
+                        <barButtonItem key="rightBarButtonItem" title="done" style="done" id="zFO-5B-2HS" userLabel="done">
+                            <connections>
+                                <action selector="onDoneButtonTapped:" destination="QPR-Gx-tak" id="wMv-RT-CLw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zde-7f-0Jk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -61,6 +70,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vk1-vU-8mk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="200.00000000000003" y="97.767857142857139"/>
+        </scene>
+        <!--Products View Controller-->
+        <scene sceneID="fTu-Pf-2NE">
+            <objects>
+                <tableViewController id="vYu-2F-dfF" customClass="ProductsViewController" customModule="API_calling" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="6LE-Rh-n0n">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="GXp-xB-apW" detailTextLabel="H0g-Nd-fiw" style="IBUITableViewCellStyleSubtitle" id="z1P-Kg-dTF">
+                                <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z1P-Kg-dTF" id="rB6-BD-jS2">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GXp-xB-apW">
+                                            <rect key="frame" x="20" y="10" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H0g-Nd-fiw">
+                                            <rect key="frame" x="20" y="31.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="vYu-2F-dfF" id="0lg-Pz-c1r"/>
+                            <outlet property="delegate" destination="vYu-2F-dfF" id="Yuw-Tg-vtj"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="qNR-z9-LGz"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SHf-SZ-TFL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1958" y="98"/>
         </scene>
     </scenes>
 </document>

@@ -10,13 +10,14 @@ import UIKit
 
 class ProductsViewController: UITableViewController {
     
-    var brand = [String: String]()
     var products = [[String: String]]()
-    
+    var brand = [String: String]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "brand products"
-        let query = "https://http://makeup-api.herokuapp.com/api/v1/products.json?brand=\(brand)"
+        let formattedBrand = (brand["brand"]!).replacingOccurrences(of: " ", with: "%20")
+        let query = "https://makeup-api.herokuapp.com/api/v1/products.json?brand=\(formattedBrand)"
         DispatchQueue.global(qos: .userInitiated).async {
             [unowned self] in
             if let url = URL(string: query) {
@@ -33,14 +34,10 @@ class ProductsViewController: UITableViewController {
     func parse(json: JSON) {
         for result in json.arrayValue {
             let productName = result["name"].stringValue
-            let productType = result["product_type"].stringValue
             let price = result["price"].stringValue
-            let product = ["name": productName, "product_type": productType, "price": price]
-            if products.contains(["name": productName, "product_type": productType, "price": price]) {
-                continue
-            } else {
+            let url = result["product_link"].stringValue
+            let product = ["name": productName, "price": price, "product_link": url]
                 products.append(product)
-            }
         }
         DispatchQueue.main.async {
             [unowned self] in
@@ -51,7 +48,7 @@ class ProductsViewController: UITableViewController {
     func loadError() {
         DispatchQueue.main.async {
             [unowned self] in
-            let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the makeup brands", preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "Loading Error", message: "There was a problem loading the makeup products", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -64,7 +61,15 @@ class ProductsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let product = products[indexPath.row]
-        cell.textLabel?.text = product["product"]
+        cell.textLabel?.text = product["name"]
+        if product["price"] != "0.0" {
+        cell.detailTextLabel?.text = "$ \(product["price"]!)"
+        }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let url = URL(string: products[indexPath.row]["product_link"]!)
+        UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
     }
 }

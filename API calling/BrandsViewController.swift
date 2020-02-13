@@ -57,11 +57,21 @@ class BrandsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return brands.count
     }
-    
+        
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let brand = brands[indexPath.row]
         cell.textLabel?.text = brand["brand"]
         return cell
+    }
+    
+    @IBAction func onDoneButtonTapped(_ sender: Any) {
+        exit(0)
+    }
+   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let dvc = segue.destination as! ProductsViewController
+        let index = tableView.indexPathForSelectedRow?.row
+        dvc.brand = brands[index!]
     }
 }
